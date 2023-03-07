@@ -87,6 +87,7 @@ class forumViewController: UIViewController,UITableViewDataSource, UITableViewDe
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "forumTableViewCell", for: indexPath) as! forumTableViewCell
+        
         cell.name.text = tabla[indexPath.row].nameForum
         cell.num.text = "1234"
         let strBase64 = tabla[indexPath.row].imagen
@@ -129,5 +130,95 @@ class forumViewController: UIViewController,UITableViewDataSource, UITableViewDe
             view.backgroundColor = settingsViewController.getUIColor(hex: "#71787C")
         }
     }
-}
+    /*
+    func loadUser(){
+        guard let url = URL(string: "http://127.0.0.1:5000/enterForum") else { return }
 
+                var request = URLRequest(url: url)
+
+                
+
+                request.httpMethod = "GET"
+
+                request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+                
+
+                URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+
+                    
+
+                    guard let data = data else { return }
+
+
+
+                    do {
+
+                        let decoder = JSONDecoder()
+
+                        self.tabla = try decoder.decode([ForumCard].self, from: data)
+                      
+
+                        DispatchQueue.main.async {
+
+                            self.tableView
+                            guard let url = URL(string:"http://127.0.0.1:5000/enterForum")
+                            else {
+                                return
+                            }
+                            
+                           
+                           
+                            
+                            
+                            // Le damos los datos del Array.
+                            let body: [String: Any] = ["user": ViewController.user?.email ?? "Empty", "forum": foro?.nameForum ?? ""]
+                            var request = URLRequest(url: url)
+                            
+                            // Pasamos a Json el Array.
+                            
+                            let finalBody = try? JSONSerialization.data(withJSONObject: body)
+                            request.httpMethod = "POST"
+                            request.httpBody = finalBody //
+                            
+                            // add headers for the request
+                            request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
+                            request.addValue("application/json", forHTTPHeaderField: "Accept")
+                            
+                            URLSession.shared.dataTask(with: request){
+                                (data, response, error) in
+                                print(response as Any)
+                                // Imprime el error en caso de que haya un fallo
+                                if let error = error {
+                                    print(error)
+                                    return
+                                }
+                                guard let data = data else{
+                                    print("Error al recivir data.")
+                                    return
+                                }
+                                print("\n\n\n")
+                                print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+                                
+                                
+                            }.resume().reloadData()
+
+                        }
+
+
+
+                    } catch let error {
+
+                        
+
+                        print("Error: ", error)
+
+                        
+
+                    }
+
+                }.resume()
+}
+*/
+
+}

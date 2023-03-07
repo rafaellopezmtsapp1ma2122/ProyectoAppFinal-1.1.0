@@ -9,8 +9,6 @@ class itemViewController: UIViewController {
         
         priceLabel.layer.masksToBounds = true
         priceLabel.layer.cornerRadius = 10
-        tagLabel.layer.masksToBounds = true
-        tagLabel.layer.cornerRadius = 10
         Button.setImage(UIImage(named:"favorito"), for: .normal)
         Button.setImage(UIImage(named:"estrella"), for: .selected)
     }
@@ -40,8 +38,6 @@ class itemViewController: UIViewController {
         
         nameLabel.text = item?.nameObj
         nameLabel.textColor = UIColor.white
-        tagLabel.text = item?.tagsObj
-        tagLabel.textColor = UIColor.white
         tectLabel.text = item?.text
         priceLabel.text = item?.stringPrice
         priceLabel.textColor = UIColor.white
@@ -111,8 +107,9 @@ class itemViewController: UIViewController {
         
     }
     @IBAction func edit(_ sender: Any) {
-        if item?.user == ViewController.user?.name{
-            
+        if item?.user == ViewController.user?.email{
+            self.performSegue(withIdentifier: "editItem", sender:
+                                sender)
         }
         
         
@@ -254,5 +251,5 @@ class itemViewController: UIViewController {
         }
     }
     
-    
+
 }

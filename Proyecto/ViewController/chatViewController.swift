@@ -6,7 +6,9 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     var foro: ForumCard?
     
-  
+    var tabla: [Forum] = []
+     
+    var tabla2: [onlineUser] = []
    
     
   
@@ -17,19 +19,25 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     @IBOutlet weak var chatView: UITableView!
     
-   
+    @IBOutlet weak var mensajeEscrito: UITextField!
+    
     @IBAction func backChat(_ sender: Any) {
+        offlineJD()
         self.dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func sendMessage(_ sender: Any) {
+        newMessage()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         keepTheme()
-    
-        autoUpdate()
+        //online()
+        tabla.removeAll()
+        autoUpdate2()
         let nib = UINib(nibName: "chatViewCell", bundle: nil)
         chatView.register(nib, forCellReuseIdentifier: "chatViewCell")
-        super.viewDidLoad()
+        
         chatView.delegate = self
         chatView.dataSource = self
         self.chatView.reloadData()
@@ -38,20 +46,118 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
     
     override func viewWillAppear(_ animated: Bool) {
         keepTheme()
-        textoChat.text = chat?.nameUser
+        //online()
+        //autoUpdate2()
+        textoChat.text = foro?.nameForum
     }
     
-    var tabla: [Forum] = []
+    override func viewDidAppear(_ animated: Bool) {
+        online()
+    }
     
     
+    func online(){
+       
+        guard let url = URL(string:"http://127.0.0.1:5000/enterForum")
+        else {
+            return
+        }
+        
+       
+       
+        
+        
+        // Le damos los datos del Array.
+        let body: [String: Any] = ["user": ViewController.user?.email ?? "Empty", "forum": foro?.nameForum ?? ""]
+        var request = URLRequest(url: url)
+        
+        // Pasamos a Json el Array.
+        
+        let finalBody = try? JSONSerialization.data(withJSONObject: body)
+        request.httpMethod = "POST"
+        request.httpBody = finalBody //
+        
+        // add headers for the request
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
+        request.addValue("application/json", forHTTPHeaderField: "Accept")
+        
+        URLSession.shared.dataTask(with: request){
+            (data, response, error) in
+            print(response as Any)
+            // Imprime el error en caso de que haya un fallo
+            if let error = error {
+                print(error)
+                return
+            }
+            guard let data = data else{
+                print("Error al recibir data.")
+                return
+            }
+            print("\n\n\n")
+            print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+            
+            
+        }.resume()
+        
+        
+        
+        
+        
+    }
+    
+    func offlineJD(){
+        
+         guard let url = URL(string:"http://127.0.0.1:5000/exitForum")
+         else {
+             return
+         }
+         
+        
+        
+        
+         
+         
+         // Le damos los datos del Array.
+         let body: [String: Any] = ["user": ViewController.user?.email ?? "Empty", "forum": foro?.nameForum ?? ""]
+         var request = URLRequest(url: url)
+         
+         // Pasamos a Json el Array.
+         
+         let finalBody = try? JSONSerialization.data(withJSONObject: body)
+         request.httpMethod = "POST"
+         request.httpBody = finalBody //
+         
+         // add headers for the request
+         request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
+         request.addValue("application/json", forHTTPHeaderField: "Accept")
+         
+         URLSession.shared.dataTask(with: request){
+             (data, response, error) in
+             print(response as Any)
+             // Imprime el error en caso de que haya un fallo
+             if let error = error {
+                 print(error)
+                 return
+             }
+             guard let data = data else{
+                 print("Error al recibir data.")
+                 return
+             }
+             print("\n\n\n")
+             print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+             
+             
+         }.resume()
+         
+    }
     
     func newMessage(){
-        /*
-        if name.text?.isEmpty == false &&  des.text?.isEmpty == false && price.text?.isEmpty == false{
+        
+       
             
             
             
-            guard let url = URL(string:"http://127.0.0.1:5000/postItem")
+            guard let url = URL(string:"http://127.0.0.1:5000/postMessages")
             else {
                 return
             }
@@ -60,15 +166,11 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
             
             // Try cacht
            
-            let imageData:NSData = image.image?.jpegData(compressionQuality: 0) as! NSData
-    //        print("\n AAAAAAAA: ", imageData)
-           
-            let strBase64 = imageData.base64EncodedString(options: .lineLength64Characters)
-    //        print("\n BASE64: ", strBase64)
+            
             
             // Le damos los datos del Array.
           
-            let body: [String: Any] = ["name": name.text ?? "Empty", "image": strBase64, "price": Int(price.text!) ?? 0, "description": des.text ?? "Empty","user": ViewController.email!]
+        let body: [String: Any] = ["user": ViewController.user?.email ?? "Empty", "forum": foro?.nameForum ?? "", "message": mensajeEscrito.text ?? "" ]
             var request = URLRequest(url: url)
          
             // Pasamos a Json el Array.
@@ -95,62 +197,73 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
                 }
                 print("\n\n\n")
                 print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+                
                 DispatchQueue.main.async {
                     self.dismiss(animated: true, completion: nil)
                 }
                 
             }.resume()
+      
         }
-        */
         
-    }
-
-    
-
-    
-    func autoUpdate(){
-        var chattName = foro!.nameForum
+        
+    func autoUpdate2(){
+        let chattName = foro!.nameForum
        
-        let replaced = chattName.replacingOccurrences(of: " ", with: "")
+        let replaced = chattName.replacingOccurrences(of: " ", with: "%20")
         print(chattName)
-        var stringURL = "http://127.0.0.1:5000//getMessage/\(replaced)"
-        print("url")
-        print(stringURL)
-        let url = URL(string: stringURL )!
-        do {
-            //Cogemos los datos de la url
-            let data = try Data(contentsOf: url)
-            //Lo transformamos de JSON a datos que pueda usar swift
-            let json = try JSONSerialization.jsonObject(with: data, options: .mutableContainers)
+        let stringURL = "http://127.0.0.1:5000/getMessage/\(replaced)"
         
-            //Creamos un array vacio para añadir las futuras varaibles que obtengamos del JSON
-            var listaTemp: [Any] = []
-           
-            
-            //Recorremos el JSON en busqueda de valores nulos y si no lo son se añaden al array anterior
-            for explica in json as! [Any] {
-               
-                if type(of: explica) != NSNull.self{
-                   
-                    listaTemp.append(explica)
+        guard let url = URL(string: stringURL) else { return }
+
+                var request = URLRequest(url: url)
+
+                
+
+                request.httpMethod = "GET"
+
+                request.setValue("application/json; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+                
+
+                URLSession.shared.dataTask(with: request) { [self] (data, response, error) in
+
                     
-                }
-            }
-            //Recorremos la lista que acabamos de crear y añadimos al otro array de objetos que hemos creado especificamente para las listas
-            for o in listaTemp as! [[String: Any]] {
-               
-                
-                tabla.append(Forum(json: o))
-                
-               
-            }
-            } catch let errorJson {
-                print(errorJson)
-            }
+
+                    guard let data = data else { return }
+
+
+
+                    do {
+
+                        let decoder = JSONDecoder()
+
+                        self.tabla = try decoder.decode([Forum].self, from: data)
+                        print(tabla)
+
+                        DispatchQueue.main.async {
+
+                            self.chatView.reloadData()
+
+                        }
+
+
+
+                    } catch let error {
+
+                        
+
+                        print("Error: ", error)
+
+                        
+
+                    }
+
+                }.resume()
         
-        self.chatView.reloadData()
         
     }
+
         
     //Preparamos las celdas para añadirlas al table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -161,19 +274,17 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        
        
         let cell = tableView.dequeueReusableCell(withIdentifier: "chatViewCell", for: indexPath) as! chatViewCell
-        //cell.userName.text = tabla[indexPath.row].nameUser
-        //cell.mensage.text = tabla[indexPath.row].mensaje
-        cell.userName.text = "Jonh David"
-        cell.mensage.text = "ALBERTO ES UN OTAKO"
+      
+        cell.mensage.text = tabla[indexPath.row].message
+        cell.userName.text = tabla[indexPath.row].user
      
         return cell
     }
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        selectedItem = indexPath.row
-        
-    }
+    
     
     
     func keepTheme(){
@@ -185,12 +296,4 @@ class chatViewController: UIViewController,UITableViewDataSource,UITableViewDele
         }
     }
     
-   /* override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let itemViewController = segue.destination as! itemViewController
-        let item = sender as! Item
-        itemViewController.item = item
-    }*/
-
-  
-
 }

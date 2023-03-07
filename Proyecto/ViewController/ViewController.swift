@@ -113,6 +113,7 @@ class ViewController: UIViewController {
                 if recibi! != "fallo"{
                     
                     if recibi! != "fallo2"{
+                        
                         ViewController.email = myEmail.text!
                         DispatchQueue.main.sync {
                             self.performSegue(withIdentifier: "goHome", sender: sender)

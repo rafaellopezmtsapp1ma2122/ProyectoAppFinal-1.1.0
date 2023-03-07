@@ -12,7 +12,6 @@ class DemoTableViewCell: UITableViewCell {
     
     @IBOutlet weak var objName: UILabel!
     
-    @IBOutlet weak var objTags: UILabel!
     
     @IBOutlet weak var objPrice: UILabel!
     
@@ -28,8 +27,7 @@ class DemoTableViewCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        objTags.layer.masksToBounds = true
-        objTags.layer.cornerRadius = 10
+     
     }
 
 }

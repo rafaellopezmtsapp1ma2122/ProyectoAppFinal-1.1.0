@@ -8,7 +8,7 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
     let cellSpacingHeight: CGFloat = 5
     var tabla: [Item] = []
     var tablaFavoritos: [Favorite] = []
-    
+    static var nameItem: String?
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
@@ -151,19 +151,22 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
         let cell = tableView.dequeueReusableCell(withIdentifier: "DemoTableViewCell", for: indexPath) as! DemoTableViewCell
        // let indexPathTapped = tableView.indexPath(for: cell)
         cell.objName.text = tabla[indexPath.row].nameObj
-        cell.objTags.text = tabla[indexPath.row].tagsObj
+        
         cell.objPrice.text = tabla[indexPath.row].stringPrice
         if tablaFavoritos.isEmpty{
             for j in tabla{
-                tabla[indexPath.row].fav = false
+                if j.user == ViewController.user?.email{
+                    
+                    tabla[indexPath.row].fav = false
+                }
             }
         }else{
             for i in tablaFavoritos {
                 
                 if i.nameObjFav == tabla[indexPath.row].nameObj{
-                  
+                    if i.userFav == ViewController.user?.email{
                     tabla[indexPath.row].fav = true
-                   
+                    }
                 }else{
                 
                     tabla[indexPath.row].fav = false
@@ -220,15 +223,11 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
             let ItemViewController = segue.destination as! itemViewController
             let item = sender as! Item
             ItemViewController.item = item
+            homeViewController.nameItem = item.nameObj
+            print( homeViewController.nameItem)
         }
        
     }
-    
-    
-    
-    
-    
-    
     
     func keepTheme(){
         var tema = settingsViewController.finalTheme

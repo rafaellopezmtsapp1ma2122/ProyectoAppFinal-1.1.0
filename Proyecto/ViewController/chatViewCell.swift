@@ -11,6 +11,8 @@ class chatViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        userName.textColor = UIColor.black
+        mensage.textColor = UIColor.black
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

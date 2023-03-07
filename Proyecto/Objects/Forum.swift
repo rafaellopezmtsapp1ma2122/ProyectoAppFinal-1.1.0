@@ -1,15 +1,10 @@
 import Foundation
 
-class Forum: Codable{
+struct Forum: Codable{
     
-    public let nameUser: String
-    public let mensaje: String
+    public let user: String
+    public let message: String
 
    
-    init(json: [String: Any]){
-
-        nameUser = json["name"] as? String ?? ""
-        mensaje = json["mensaje"] as? String ?? ""
-       
-    }
+   
 }

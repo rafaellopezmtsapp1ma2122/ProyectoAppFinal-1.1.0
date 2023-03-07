@@ -181,19 +181,24 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
         let cell = tableView.dequeueReusableCell(withIdentifier: "DemoTableViewCell", for: indexPath) as! DemoTableViewCell
         
         cell.objName.text = tabla[indexPath.row].nameObj
-        cell.objTags.text = tabla[indexPath.row].tagsObj
+      
         cell.objPrice.text = tabla[indexPath.row].stringPrice
         
         if tablaFavoritos.isEmpty{
             for j in tabla{
-                tabla[indexPath.row].fav = false
+                if j.user == ViewController.user?.email{
+                    
+                    tabla[indexPath.row].fav = false
+                }
             }
         }else{
             for i in tablaFavoritos {
                 
                 if i.nameObjFav == tabla[indexPath.row].nameObj{
                   
+                    if i.userFav == ViewController.user?.email{
                     tabla[indexPath.row].fav = true
+                    }
                    
                 }else{
                 
