@@ -10,6 +10,8 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    //Variables y outlets
+    
     let userDefaults = UserDefaults.standard
     
     let OnOff = "OnOff"
@@ -31,11 +33,8 @@ class ViewController: UIViewController {
     
     static var user: User?
     
+    var errorLog: errorObj?
     
-    //let jsonString = [String: Any]
-
-    
-    //let jsonData = Data(jsonString.utf8)
     
     @IBOutlet weak var myEmail: UITextField!
        
@@ -54,6 +53,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //Función del LogIn
     @IBAction func logOn(_ sender: Any) {
         //Comprobamos que no esten vacios los textfield e iniciamos la acción del metodo post para enviar los datos de usuario
        
@@ -81,47 +81,38 @@ class ViewController: UIViewController {
                 (data, response, error) in
                 //print(response as Any)
                 if let error = error {
-                    print(error)
+                    //print(error)
                     return
                 }
                 guard let data = data else{
-                    print("Error Data")
+                    //print("Error Data")
                     return
                 }
-                print("\n\n\n")
-                print(String(data: data, encoding: .utf8)!)
-                print(data)
+                //print("\n\n\n")
+                //print(String(data: data, encoding: .utf8)!)
+                //print(data)
                 
                 do {
                     
                     let decoder = JSONDecoder()
 
                     ViewController.user = try decoder.decode(User.self, from: data)
+                   
                     ViewController.imageUser = ViewController.user?.image
                     
+                    DispatchQueue.main.sync {
+                        self.performSegue(withIdentifier: "goHome", sender: sender)
+                    }
                     
                 } catch let error {
                     
                     print("Error: ", error)
-                    
+        
                 }
-                recibi = String(data: data, encoding: .utf8)
-                
-                
-                //Recibimos la respuesta del servido si existe o no el usuario enviado y devuelve correcto o incorrecto y ya mandamos a la página correspondiente.
-                
-                if recibi! != "fallo"{
-                    
-                    if recibi! != "fallo2"{
-                        
-                        ViewController.email = myEmail.text!
-                        DispatchQueue.main.sync {
-                            self.performSegue(withIdentifier: "goHome", sender: sender)
-                        }
-                    }
+               
+                DispatchQueue.main.sync {
+                    ViewController.email = myEmail.text!
                 }
-                    
-             
             }.resume()
             
         }else{
@@ -131,6 +122,7 @@ class ViewController: UIViewController {
         }
     }
     
+    //Función para obtener las variables de los user defaults
     func preferences(){
         
         if userDefaults.string(forKey: themekey) == dark{
@@ -145,4 +137,5 @@ class ViewController: UIViewController {
    
 
     }
+    
 }

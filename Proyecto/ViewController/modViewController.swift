@@ -37,10 +37,6 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
 
     }
     
- 
-
-    
-
     // Creamos una funcion para activar el ImagePicker.
 
     @IBAction func changeImage(_ sender: Any) {
@@ -52,8 +48,6 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         self.present(imagePicker, animated: true, completion: nil)
 
     }
-
-    
 
     // Creamos la funcion para el funcionamiento del ImagePicker.
 
@@ -73,10 +67,9 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             
         let strBase64 = ViewController.user?.image ?? ""
             
-      
                 //Generamos las variable de las diferentes imagenes tanto codificadas como para codificar
                 let dataDecoded : Data = Data(base64Encoded: strBase64, options: .ignoreUnknownCharacters)!
-        if dataDecoded.isEmpty{
+                if dataDecoded.isEmpty{
                     self.image.image = UIImage(named: "Group 227profile.png")
                 }else{
                     let decodedimage:UIImage = UIImage(data: dataDecoded as Data)!
@@ -84,10 +77,6 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
                     //Colocamos la imagen en su lugar correspondiente
                     self.image.image = decodedimage
                 }
-               
-        //}
-       
-        
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) { // Si se cancela, regresa de nuevo.
@@ -144,30 +133,24 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
             }
-      /*
-            profileViewController.nombreAntiguo = ViewController.user?.name ?? ""
-            profileViewController.imagenAntigua = ViewController.user?.image ?? ""
-            //Recibimos la respuesta del servido si existe o no el usuario enviado y devuelve correcto o incorrecto y ya mandamos a la página correspondiente.*/
+     
+            //Recibimos la respuesta del servidor si existe o no el usuario enviado y devuelve correcto o incorrecto y ya mandamos a la página correspondiente.
             do {
                 
                 let decoder = JSONDecoder()
 
                 ViewController.user = try decoder.decode(User.self, from: data)
-               //ViewController.imageUser = ViewController.user?.image
-                /*profileViewController.nombreAntiguo = ViewController.user?.name ?? "default value"*/
                 
             } catch let error {
                 
                 print("Error: ", error)
                 
             }
-           
-            
-            
+        
         }.resume()
         
-       
     }
+    
     func keepTheme(){
         var tema = settingsViewController.finalTheme
         if tema == "dark"{

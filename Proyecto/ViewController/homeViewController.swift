@@ -2,14 +2,18 @@ import UIKit
 
 class homeViewController: UIViewController,UITableViewDataSource, UITableViewDelegate {
     
+    //Variable
     var token = String()
     var selectedItem: Int?
     var okCell = false
     let cellSpacingHeight: CGFloat = 5
     var tabla: [Item] = []
+    var tablaFiltrada: [Item] = []
     var tablaFavoritos: [Favorite] = []
     static var nameItem: String?
+    static var started = false
     
+    //Outlets
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
     @IBAction func create(_ sender: UIButton) {
@@ -19,21 +23,23 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
     }
     
     
-    
+    //Funciones de ciclo de vida
     override func viewDidLoad(){
         super.viewDidLoad()
       
         keepTheme()
+        
         tablaFavoritos.removeAll()
         SaveFavorites()
         tabla.removeAll()
         updateElementsTableView()
         self.token = ViewController.token ?? ""
+        //Preperamos el diseño de las celdas
         let nib = UINib(nibName: "DemoTableViewCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: "DemoTableViewCell")
         tableView.delegate = self
         tableView.dataSource = self
-        
+        homeViewController.started = true
         self.tableView.reloadData()
         
        
@@ -41,17 +47,16 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
     
     override func viewWillAppear(_ animated: Bool) {
         keepTheme()
-        tablaFavoritos.removeAll()
-        SaveFavorites()
-       
-        tabla.removeAll()
-        updateElementsTableView()
-       
-        
+        print(homeViewController.started)
+        if homeViewController.started == false{
+            tablaFavoritos.removeAll()
+            SaveFavorites()
+            tabla.removeAll()
+            updateElementsTableView()
+        }
     }
     
- 
-    
+    //Recargamos los datos
     @IBAction func reload(_ sender: Any) {
       
         tablaFavoritos.removeAll()
@@ -100,9 +105,9 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
     }
         
 
-   /*func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return cellSpacingHeight
-        }*/
+    func searchLoad(){
+     
+    }
 
     //Preparamos las celdas para añadirlas al table view
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -143,53 +148,41 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
         
     }
    
-    
+    //Preparamos las celdas con datos
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
      
-      
-       
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: "DemoTableViewCell", for: indexPath) as! DemoTableViewCell
-       // let indexPathTapped = tableView.indexPath(for: cell)
+     
         cell.objName.text = tabla[indexPath.row].nameObj
         
         cell.objPrice.text = tabla[indexPath.row].stringPrice
-        if tablaFavoritos.isEmpty{
-            for j in tabla{
-                if j.user == ViewController.user?.email{
-                    
-                    tabla[indexPath.row].fav = false
-                }
-            }
-        }else{
+    
+            var encontrado = false
+            
             for i in tablaFavoritos {
                 
                 if i.nameObjFav == tabla[indexPath.row].nameObj{
-                    if i.userFav == ViewController.user?.email{
-                    tabla[indexPath.row].fav = true
+                
+                    if i.userFav == ViewController.user!.email{
+                        
+                        encontrado = true
+                        break
+                    
+                    
                     }
-                }else{
-                
-                    tabla[indexPath.row].fav = false
-                
-                    
-                    
-            }
+                }
                
             }
-        }
         
-        if tabla[indexPath.row].fav == true{
+        tabla[indexPath.row].fav = encontrado
+        if encontrado{
             cell.favItem.image = UIImage(named: "estrella.png")
-            
         }
-        if tabla[indexPath.row].fav == false{
+        else{
             cell.favItem.image = UIImage(named: "favorito.png")
-            
         }
-   
-        
-       
-        
+        //Descargamos la imagen
         let strBase64 = tabla[indexPath.row].imagenObj
         
         do {
@@ -217,14 +210,14 @@ class homeViewController: UIViewController,UITableViewDataSource, UITableViewDel
         
     }
     
-   
+   //Transladamos los datos de una view  a otra
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if okCell == true{
             let ItemViewController = segue.destination as! itemViewController
             let item = sender as! Item
             ItemViewController.item = item
             homeViewController.nameItem = item.nameObj
-            print( homeViewController.nameItem)
+           
         }
        
     }

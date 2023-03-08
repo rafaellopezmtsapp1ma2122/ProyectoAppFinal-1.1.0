@@ -1,15 +1,10 @@
 import UIKit
 
 class registerViewController: UIViewController {
-
+    //Variable
     var token: String?
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
+    //Outlets
     @IBOutlet weak var email: UITextField!
     
     @IBOutlet weak var newUsername: UITextField!
@@ -18,6 +13,14 @@ class registerViewController: UIViewController {
     
     @IBOutlet weak var rePass: UITextField!
     
+    //Fuciones de Ciclo de vida
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    
+    //Función para comprobar que las contraseñas coincidan
     func confirmPass() -> String{
         let pass = newPass.text
         let rePaswd = rePass.text
@@ -28,7 +31,7 @@ class registerViewController: UIViewController {
             return "error"
         }
     }
-    
+    //Funcion de comprobación para ver si no esta vacio
     func notEmpty() -> Bool{
         if newUsername.text?.isEmpty == false && newPass.text?.isEmpty == false && rePass.text?.isEmpty == false && email.text?.isEmpty == false{
             
@@ -39,7 +42,7 @@ class registerViewController: UIViewController {
         }
         
     }
-    
+    //Función que mira que existan los datos y los envia a traves de un metodo POST, si la condicion no se cumple se ponen de color amarillo los campos.
     @IBAction func createAccount(_ sender: Any) {
       
             if confirmPass()=="ok" && notEmpty()==true{

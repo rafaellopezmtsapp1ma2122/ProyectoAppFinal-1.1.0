@@ -1,17 +1,13 @@
 import UIKit
 
 class createItemViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
-    @IBOutlet weak var image: UIImageView!
-    @IBOutlet weak var name: UITextField!
-    @IBOutlet weak var tags: UITextField!
-    @IBOutlet weak var des: UITextView!
-    @IBOutlet weak var price: UITextField!
-    
-    @IBAction func backCreateItem(_ sender: Any) {
-        self.dismiss(animated: true, completion: nil)
-    }
     
     let imagePicker = UIImagePickerController()
+    
+    @IBOutlet weak var image: UIImageView!
+    @IBOutlet weak var name: UITextField!
+    @IBOutlet weak var des: UITextView!
+    @IBOutlet weak var price: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,25 +19,26 @@ class createItemViewController: UIViewController, UIImagePickerControllerDelegat
         des.layer.cornerRadius = 10
     }
     
+    //Mantener el tema una vez aparezca la vista
     override func viewWillAppear(_ animated: Bool) {
         keepTheme()
     }
     
+    // Volver atrás
+    @IBAction func backCreateItem(_ sender: Any) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    //Comprobar si algún campo vacio existe y en función de si existe o no, realiza la peticion POST o no
     @IBAction func confirm(_ sender: Any) {
         
         if name.text?.isEmpty == false &&  des.text?.isEmpty == false && price.text?.isEmpty == false{
-            
-            
             
             guard let url = URL(string:"http://127.0.0.1:5000/postItem")
             else {
                 return
             }
-            
-            
-            
-            // Try cacht
-           
+
             let imageData:NSData = image.image?.jpegData(compressionQuality: 0) as! NSData
     //        print("\n AAAAAAAA: ", imageData)
            
@@ -57,9 +54,7 @@ class createItemViewController: UIViewController, UIImagePickerControllerDelegat
             
             let finalBody = try? JSONSerialization.data(withJSONObject: body)
             request.httpMethod = "POST"
-            request.httpBody = finalBody //
-            
-            // add headers for the request
+            request.httpBody = finalBody
             request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
             request.addValue("application/json", forHTTPHeaderField: "Accept")
             
@@ -78,6 +73,7 @@ class createItemViewController: UIViewController, UIImagePickerControllerDelegat
                 print("\n\n\n")
                 print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
                 DispatchQueue.main.async {
+                    homeViewController.started = false
                     self.dismiss(animated: true, completion: nil)
                 }
                 
@@ -87,21 +83,25 @@ class createItemViewController: UIViewController, UIImagePickerControllerDelegat
         
        
     }
-    
+    //Función para cambiar imagen del objeto
     @IBAction func changeImage(_ sender: Any) {
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .photoLibrary
         self.present(imagePicker, animated: true, completion: nil)
     }
+    
+    //Funcion para seleccionar imagen de la galería
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         let img = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
         image.image = img
-        self.dismiss(animated: true, completion: nil) // Cierra la galería al elejir foto.
+        self.dismiss(animated: true, completion: nil) // Cierra la galería al elegir foto.
     }
 
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) { // Si se cancela, regresa de nuevo.
+    // Si se cancela, regresa de nuevo.
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }
+    
     func keepTheme(){
         var tema = settingsViewController.finalTheme
         if tema == "dark"{

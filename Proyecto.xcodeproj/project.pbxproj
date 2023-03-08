@@ -37,6 +37,7 @@
 		0DD6273D298A5A8D0038BCE2 /* item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD6273C298A5A8D0038BCE2 /* item.swift */; };
 		0DD62741298A5DB30038BCE2 /* homeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD62740298A5DB30038BCE2 /* homeViewController.swift */; };
 		0DD6274D298A7A8E0038BCE2 /* profileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD6274C298A7A8E0038BCE2 /* profileViewController.swift */; };
+		0DE4742C29B88E0C008DC5E6 /* errorObj.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DE4742B29B88E0C008DC5E6 /* errorObj.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		0DD6273C298A5A8D0038BCE2 /* item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = item.swift; sourceTree = "<group>"; };
 		0DD62740298A5DB30038BCE2 /* homeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homeViewController.swift; sourceTree = "<group>"; };
 		0DD6274C298A7A8E0038BCE2 /* profileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileViewController.swift; sourceTree = "<group>"; };
+		0DE4742B29B88E0C008DC5E6 /* errorObj.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = errorObj.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +108,7 @@
 				0D3A57AA299F809A005EB82F /* User.swift */,
 				0D901D6929AE167A00D2BE98 /* Fav.swift */,
 				0D16CD5229B769CA00D55DB2 /* onlineUser.swift */,
+				0DE4742B29B88E0C008DC5E6 /* errorObj.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				0D16CD5329B769CA00D55DB2 /* onlineUser.swift in Sources */,
 				0DD6273D298A5A8D0038BCE2 /* item.swift in Sources */,
 				0D3769972987B72300C02544 /* SceneDelegate.swift in Sources */,
+				0DE4742C29B88E0C008DC5E6 /* errorObj.swift in Sources */,
 				0DD6274D298A7A8E0038BCE2 /* profileViewController.swift in Sources */,
 				0D0FADA729925DD100BF9A26 /* itemViewController.swift in Sources */,
 				0D34B02629A3AA9B001587C5 /* settingsViewController.swift in Sources */,

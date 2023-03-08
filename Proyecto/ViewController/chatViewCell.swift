@@ -10,7 +10,7 @@ class chatViewCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        // Colores de los textos
         userName.textColor = UIColor.black
         mensage.textColor = UIColor.black
     }

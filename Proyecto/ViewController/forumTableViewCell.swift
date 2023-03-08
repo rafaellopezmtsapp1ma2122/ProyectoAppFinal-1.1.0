@@ -1,11 +1,9 @@
 import UIKit
 
 class forumTableViewCell: UITableViewCell {
-
-    
+    //Atributos de los foros
     @IBOutlet weak var cardForum: UIView!
     
-
     @IBOutlet weak var imagenForm: UIImageView!
     
     @IBOutlet weak var name: UILabel!

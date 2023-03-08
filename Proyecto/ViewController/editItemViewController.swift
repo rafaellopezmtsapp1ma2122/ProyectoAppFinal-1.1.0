@@ -10,23 +10,32 @@ import UIKit
 class editItemViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
         var item: Item?
+        let imagePicker = UIImagePickerController()
     
         @IBOutlet weak var image: UIImageView!
         @IBOutlet weak var name: UITextField!
-        @IBOutlet weak var tags: UITextField!
         @IBOutlet weak var des: UITextView!
         @IBOutlet weak var price: UITextField!
         
+       //Funciones de Ciclo de vida
+        override func viewWillAppear(_ animated: Bool) {
+        keepTheme()
+        //Colocar textos
+        name.text = item?.nameObj
+        des.text = item?.text
+        price.text = item?.stringPrice
+
+    }
+    //Funcion de volver a la pantalla anterior
         @IBAction func backCreateItem(_ sender: Any) {
             self.dismiss(animated: true, completion: nil)
         }
         
-        let imagePicker = UIImagePickerController()
+       
         
         override func viewDidLoad() {
             super.viewDidLoad()
            
-            
             keepTheme()
             imagePicker.delegate = self
             des.backgroundColor = UIColor.white
@@ -34,29 +43,19 @@ class editItemViewController: UIViewController, UIImagePickerControllerDelegate,
             des.layer.cornerRadius = 10
         }
         
-        override func viewWillAppear(_ animated: Bool) {
-            keepTheme()
-            name.text = item?.nameObj
-            des.text = item?.text
-            price.text = item?.stringPrice
-    
-        }
-        
+       
+        //Función POST para editar el item
         @IBAction func confirm(_ sender: Any) {
             
             if name.text?.isEmpty == false &&  des.text?.isEmpty == false && price.text?.isEmpty == false{
                 
+                let nombreAnt = homeViewController.nameItem!
                 
-                
-                guard let url = URL(string:"http://127.0.0.1:5000/editItem")
+                guard let url = URL(string:"http://127.0.0.1:5000/editItem/\(nombreAnt)")
                 else {
                     return
                 }
-                
-                
-                
-                // Try cacht
-               
+           
                 let imageData:NSData = image.image?.jpegData(compressionQuality: 0) as! NSData
         //        print("\n AAAAAAAA: ", imageData)
                
@@ -65,7 +64,7 @@ class editItemViewController: UIViewController, UIImagePickerControllerDelegate,
                 
                 // Le damos los datos del Array.
               
-                let body: [String: Any] = ["name": name.text ?? "Empty", "image": strBase64, "price": Int(price.text!) ?? 0, "description": des.text ?? "Empty", "user": ViewController.user?.email, "nombreAntiguo": homeViewController.nameItem]
+                let body: [String: Any] = ["name": name.text ?? "Empty", "image": strBase64, "price": Int(price.text!) ?? 0, "description": des.text ?? "Empty", "user": ViewController.user?.email ?? ""]
                 var request = URLRequest(url: url)
              
                 // Pasamos a Json el Array.
@@ -93,6 +92,7 @@ class editItemViewController: UIViewController, UIImagePickerControllerDelegate,
                     print("\n\n\n")
                     print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
                     DispatchQueue.main.async {
+                        homeViewController.started = false
                         self.performSegue(withIdentifier: "editReturn", sender:sender)
                     }
                     
@@ -103,17 +103,19 @@ class editItemViewController: UIViewController, UIImagePickerControllerDelegate,
            
         }
         
+        //Permitir el cambio de imagen
         @IBAction func changeImage(_ sender: Any) {
             imagePicker.allowsEditing = false
             imagePicker.sourceType = .photoLibrary
             self.present(imagePicker, animated: true, completion: nil)
         }
+        //Activar el selector de imagen
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
             let img = info[UIImagePickerController.InfoKey.originalImage] as? UIImage
             image.image = img
             self.dismiss(animated: true, completion: nil) // Cierra la galería al elejir foto.
         }
-
+        //Desactivar el selector de imagen
         func imagePickerControllerDidCancel(_ picker: UIImagePickerController) { // Si se cancela, regresa de nuevo.
             self.dismiss(animated: true, completion: nil)
         }

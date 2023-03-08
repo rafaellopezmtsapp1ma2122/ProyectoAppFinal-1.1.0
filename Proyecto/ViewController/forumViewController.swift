@@ -4,21 +4,20 @@ class forumViewController: UIViewController,UITableViewDataSource, UITableViewDe
 
     var selectedItem: Int?
     var okCell = false
+    static var foro = ""
     
     @IBOutlet weak var tableView: UITableView!
     
-   
     @IBAction func createForum(_ sender: UIButton) {
         self.performSegue(withIdentifier: "createForum", sender:
                             sender)
         
     }
-    
 
-    
-    
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        //offlineJD()
         keepTheme()
         tabla.removeAll()
         autoUpdate()
@@ -32,6 +31,7 @@ class forumViewController: UIViewController,UITableViewDataSource, UITableViewDe
     }
     
     override func viewDidAppear(_ animated: Bool) {
+       
         tabla.removeAll()
         autoUpdate()
         tableView.reloadData()
@@ -89,7 +89,7 @@ class forumViewController: UIViewController,UITableViewDataSource, UITableViewDe
         let cell = tableView.dequeueReusableCell(withIdentifier: "forumTableViewCell", for: indexPath) as! forumTableViewCell
         
         cell.name.text = tabla[indexPath.row].nameForum
-        cell.num.text = "1234"
+        cell.num.text = String(tabla[indexPath.row].numero)
         let strBase64 = tabla[indexPath.row].imagen
         
         do {
@@ -220,5 +220,51 @@ class forumViewController: UIViewController,UITableViewDataSource, UITableViewDe
                 }.resume()
 }
 */
-
+    func offlineJD(){
+        if forumViewController.foro != nil{
+            guard let url = URL(string:"http://127.0.0.1:5000/exitForum")
+            else {
+                return
+            }
+            
+           
+           
+           
+            
+            
+            // Le damos los datos del Array.
+            let body: [String: Any] = ["user": ViewController.user?.email ?? "Empty", "forum": forumViewController.foro]
+            var request = URLRequest(url: url)
+            
+            // Pasamos a Json el Array.
+            
+            let finalBody = try? JSONSerialization.data(withJSONObject: body)
+            request.httpMethod = "POST"
+            request.httpBody = finalBody //
+            
+            // add headers for the request
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
+            request.addValue("application/json", forHTTPHeaderField: "Accept")
+            
+            URLSession.shared.dataTask(with: request){
+                (data, response, error) in
+                print(response as Any)
+                // Imprime el error en caso de que haya un fallo
+                if let error = error {
+                    print(error)
+                    return
+                }
+                guard let data = data else{
+                    print("Error al recibir data.")
+                    return
+                }
+                print("\n\n\n")
+                print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+                
+                
+            }.resume()
+            
+        }
+        
+    }
 }

@@ -11,6 +11,10 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
     
     var okCell = false
     
+    var imageLoad = false
+    
+   var start = false
+    
     //Implementamos los outlets y las func
     
     @IBOutlet weak var nameUser: UILabel!
@@ -20,12 +24,12 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
     @IBOutlet weak var myElementsTable: UITableView!
     
     @IBOutlet weak var Menu: UIButton!
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         keepTheme()
         //Cargamos la imagen de perfil
-        //profileImg()
         reloadProfile()
         tabla.removeAll()
         updateElementsTableView()
@@ -44,34 +48,43 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
         myElementsTable.dataSource = self
         //Refrescamis la table view
         self.myElementsTable.reloadData()
-        
+        start = true
         
     }
     
     
     
-    
+    //Editar perfil
     @IBAction func modify(_ sender: Any) {
         self.performSegue(withIdentifier: "editProfile", sender: UIAction.self)
 
     }
     
-    
+    //Funcioned de Ciclo de vida
     override func viewDidAppear(_ animated: Bool) {
-        profileImg()
+        if imageLoad == false{
+            profileImg()
+        }
     }
     override func viewWillAppear(_ animated: Bool) {
         
         
         keepTheme()
         //profileImg()
-        reloadProfile()
-        tablaFavoritos.removeAll()
-        SaveFavorites()
-        tabla.removeAll()
-        updateElementsTableView()
+        if start == false{
+            reloadProfile()
+            tablaFavoritos.removeAll()
+            SaveFavorites()
+            tabla.removeAll()
+            updateElementsTableView()
+        }
+        start = false
 
     }
+    
+    
+    
+        
     
     func SaveFavorites(){
         let url2 = URL(string: "http://127.0.0.1:5000/getFavorite")!
@@ -150,7 +163,7 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
       
                 //Generamos las variable de las diferentes imagenes tanto codificadas como para codificar
                 let dataDecoded : Data = Data(base64Encoded: strBase64, options: .ignoreUnknownCharacters)!
-        if dataDecoded.isEmpty{
+        if dataDecoded.isEmpty {
                     self.imageUser.image = UIImage(named: "Group 227profile.png")
                 }else{
                     let decodedimage:UIImage = UIImage(data: dataDecoded as Data)!
@@ -165,7 +178,7 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
                
                 //print("Error jajaj xd")
           
-        
+        imageLoad = true
         
        
     }
@@ -184,41 +197,35 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
       
         cell.objPrice.text = tabla[indexPath.row].stringPrice
         
-        if tablaFavoritos.isEmpty{
-            for j in tabla{
-                if j.user == ViewController.user?.email{
-                    
-                    tabla[indexPath.row].fav = false
+        var encontrado = false
+        
+        for i in tablaFavoritos {
+            
+            if i.nameObjFav == tabla[indexPath.row].nameObj{
+              
+                if i.userFav == ViewController.user!.email{
+                
+                    encontrado = true
+                    break
+                
+                
                 }
             }
-        }else{
-            for i in tablaFavoritos {
-                
-                if i.nameObjFav == tabla[indexPath.row].nameObj{
-                  
-                    if i.userFav == ViewController.user?.email{
-                    tabla[indexPath.row].fav = true
-                    }
-                   
-                }else{
-                
-                    tabla[indexPath.row].fav = false
-                
-                    
-                    
-            }
-               
-            }
+           
         }
+    
+  
+    tabla[indexPath.row].fav = encontrado
+    if encontrado{
+        cell.favItem.image = UIImage(named: "estrella.png")
         
-        if tabla[indexPath.row].fav == true{
-            cell.favItem.image = UIImage(named: "estrella.png")
-            
-        }
-        if tabla[indexPath.row].fav == false{
-            cell.favItem.image = UIImage(named: "favorito.png")
-            
-        }
+        
+    }
+    else{
+        cell.favItem.image = UIImage(named: "favorito.png")
+        
+    }
+
         //Decodifocamos la imagen para su postorior uso en la celda
         let strBase64 = tabla[indexPath.row].imagenObj
         do {

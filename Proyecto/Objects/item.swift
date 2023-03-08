@@ -3,6 +3,7 @@ import UIKit
 
 class Item {
     
+    // Variables del Item
     public let nameObj: String
     public let text: String
     public let priceObj: Int
@@ -12,6 +13,7 @@ class Item {
     public let user: String
     public var fav: Bool
     
+    // Inicialización de las variables
     init(json: [String: Any]){
         nameObj = json["name"] as? String ?? "None"
         text = json["description"] as? String ?? "Without description"
