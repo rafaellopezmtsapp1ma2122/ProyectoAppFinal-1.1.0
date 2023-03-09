@@ -58,7 +58,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="51" height="31"/>
                                                 <color key="onTintColor" red="0.88418585059999999" green="0.84364861250000001" blue="0.488779664" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <connections>
-                                                    <action selector="switchRemember:" destination="Ry8-uE-vae" eventType="valueChanged" id="0cZ-1i-MEo"/>
+                                                    <action selector="RemberSaved:" destination="Ry8-uE-vae" eventType="valueChanged" id="SbB-7A-Oeg"/>
                                                 </connections>
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember me" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cP9-m3-95n">
@@ -116,6 +116,7 @@
                     <connections>
                         <outlet property="myEmail" destination="qTq-G5-HAh" id="GJX-G3-E0f"/>
                         <outlet property="myPaswd" destination="gYh-Gj-BMd" id="066-Fc-QzT"/>
+                        <outlet property="switchBar" destination="fCw-i0-LFI" id="RAC-5r-eiE"/>
                         <segue destination="rtk-ct-zyU" kind="presentation" identifier="goHome" modalPresentationStyle="fullScreen" id="Iyo-Lr-L1Z"/>
                         <segue destination="vWe-QC-qiV" kind="presentation" identifier="register" modalPresentationStyle="fullScreen" id="1ia-iS-zPd"/>
                     </connections>
@@ -138,19 +139,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="highlightedColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </label>
-                            <searchBar contentMode="redraw" searchBarStyle="minimal" text="" placeholder="Search" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bvw-da-mgf">
-                                <rect key="frame" x="10" y="92" width="394" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="44" id="50L-DL-4cN"/>
-                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="394" id="FVg-lU-Bwi"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="zLJ-ie-E4g"/>
-                                </constraints>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardAppearance="alert"/>
-                                <scopeButtonTitles>
-                                    <string>Title</string>
-                                    <string>Title</string>
-                                </scopeButtonTitles>
-                            </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="155" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="qng-l8-1T7">
                                 <rect key="frame" x="20" y="186" width="374" height="590"/>
                                 <color key="backgroundColor" red="0.22674661870000001" green="0.25084635620000001" blue="0.26346424219999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -195,26 +183,20 @@
                         <viewLayoutGuide key="safeArea" id="GUr-5E-oTW"/>
                         <color key="backgroundColor" red="0.22674661870000001" green="0.25084635620000001" blue="0.26346424219999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="Q3y-UN-BzN" firstAttribute="top" secondItem="4PH-Kd-LxS" secondAttribute="bottom" constant="54" id="2nV-ch-LjZ"/>
                             <constraint firstItem="8T1-ZU-2R4" firstAttribute="leading" secondItem="GUr-5E-oTW" secondAttribute="leading" constant="11" id="31m-l6-rpT"/>
                             <constraint firstItem="4PH-Kd-LxS" firstAttribute="top" secondItem="GUr-5E-oTW" secondAttribute="top" id="3Am-Nt-P14"/>
                             <constraint firstItem="qng-l8-1T7" firstAttribute="leading" secondItem="GUr-5E-oTW" secondAttribute="leading" constant="20" id="7Pg-vE-KLf"/>
-                            <constraint firstItem="Bvw-da-mgf" firstAttribute="leading" secondItem="GUr-5E-oTW" secondAttribute="leading" constant="10" id="CBj-oT-nO6"/>
-                            <constraint firstItem="Bvw-da-mgf" firstAttribute="leading" secondItem="GUr-5E-oTW" secondAttribute="leading" constant="10" id="KPd-Pc-4EK"/>
-                            <constraint firstItem="J0r-p4-hed" firstAttribute="top" secondItem="Bvw-da-mgf" secondAttribute="bottom" constant="15" id="T10-5Q-Ics"/>
                             <constraint firstItem="qng-l8-1T7" firstAttribute="top" secondItem="Q3y-UN-BzN" secondAttribute="bottom" constant="13" id="T3w-AN-TJS"/>
-                            <constraint firstItem="Bvw-da-mgf" firstAttribute="top" secondItem="8T1-ZU-2R4" secondAttribute="bottom" id="Un1-vh-Qyy"/>
-                            <constraint firstItem="GUr-5E-oTW" firstAttribute="trailing" secondItem="Bvw-da-mgf" secondAttribute="trailing" constant="10" id="WVp-mI-tQh"/>
                             <constraint firstItem="GUr-5E-oTW" firstAttribute="trailing" secondItem="4PH-Kd-LxS" secondAttribute="trailing" constant="20" id="Ymq-0L-P9J"/>
                             <constraint firstItem="J0r-p4-hed" firstAttribute="leading" secondItem="GUr-5E-oTW" secondAttribute="leading" constant="11" id="adu-15-cyy"/>
-                            <constraint firstItem="Bvw-da-mgf" firstAttribute="top" secondItem="8T1-ZU-2R4" secondAttribute="bottom" id="bV1-K7-tJG"/>
                             <constraint firstItem="GUr-5E-oTW" firstAttribute="trailing" secondItem="Q3y-UN-BzN" secondAttribute="trailing" constant="20" id="c5k-9b-YyC"/>
-                            <constraint firstItem="qng-l8-1T7" firstAttribute="top" secondItem="Bvw-da-mgf" secondAttribute="bottom" constant="50" id="iCC-I9-DBP"/>
+                            <constraint firstItem="J0r-p4-hed" firstAttribute="top" secondItem="8T1-ZU-2R4" secondAttribute="bottom" constant="59" id="dQ9-dE-Acu"/>
                             <constraint firstItem="8T1-ZU-2R4" firstAttribute="top" secondItem="GUr-5E-oTW" secondAttribute="top" constant="13" id="ywj-E2-i87"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="" image="Vectorhome" id="kOH-jb-dgR"/>
                     <connections>
-                        <outlet property="searchBar" destination="Bvw-da-mgf" id="fPQ-Bn-Qmg"/>
                         <outlet property="tableView" destination="qng-l8-1T7" id="HmN-I5-dkj"/>
                         <segue destination="TpA-cY-Yem" kind="presentation" identifier="item" modalPresentationStyle="fullScreen" id="gCe-E8-Zbe"/>
                         <segue destination="tW6-13-JGn" kind="presentation" identifier="create" modalPresentationStyle="fullScreen" id="ZMT-HX-ww2"/>

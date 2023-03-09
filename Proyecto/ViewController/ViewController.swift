@@ -5,10 +5,10 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         preferences()
-        
-        
-        // Do any additional setup after loading the view.
+        change()
+        updateRember()
     }
+   
     
     //Variables y outlets
     
@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     let themekey = "themekey"
     let dark = "dark"
     let light = "light"
+    
     
     static var email: String?
     
@@ -45,14 +46,7 @@ class ViewController: UIViewController {
         self.performSegue(withIdentifier: "register", sender: sender)
     }
     
-    @IBAction func switchRemember(_ sender: UISwitch) {
-        if sender.isOn == true {
-            print("recordar activado ")
-        }else{
-            print("recordar desactivado")
-        }
-    }
-    
+  
     //Función del LogIn
     @IBAction func logOn(_ sender: Any) {
         //Comprobamos que no esten vacios los textfield e iniciamos la acción del metodo post para enviar los datos de usuario
@@ -111,6 +105,7 @@ class ViewController: UIViewController {
                 }
                
                 DispatchQueue.main.sync {
+                    RemberSaved()
                     ViewController.email = myEmail.text!
                 }
             }.resume()
@@ -134,8 +129,108 @@ class ViewController: UIViewController {
             settingsViewController.finalTheme = "light"
         }
         
-   
-
     }
     
+    var finalRember = "true"
+
+       let remberkey = "remberkey"
+       let boolKey = "boolKey"
+       let emailkey = "emailkey"
+       let passkey = "passkey"
+
+       let varTrue = "true"
+
+       let varFalse = "false"
+    
+    var emailR = ""
+       
+       var passR = ""
+    
+    var recoradando = ""
+
+       func updateRember(){
+
+           let preferencia = userDefaults.string(forKey: remberkey) ?? ""
+
+           print(preferencia)
+
+           if preferencia == varTrue {
+
+               switchBar.setOn(true, animated: true)
+               
+             
+
+               finalRember = "false"
+
+           }
+
+           else if preferencia == varFalse {
+
+               switchBar.setOn(false, animated: true)
+              
+               finalRember = "true"
+
+           }
+
+       }
+
+    @IBOutlet weak var switchBar: UISwitch!
+    
+    
+    func RemberSaved() {
+
+           switch finalRember{
+
+           case "true":
+              
+               emailR = myEmail.text!
+               passR = myPaswd.text!
+
+               userDefaults.set(varTrue, forKey: remberkey)
+               
+               userDefaults.set(emailR, forKey: emailkey)
+               userDefaults.set(passR, forKey: passkey)
+
+               recoradando = userDefaults.string(forKey: remberkey)!
+               userDefaults.set(recoradando, forKey: boolKey)
+             
+               updateRember()
+               
+               print(userDefaults.set(emailR, forKey: emailkey))
+               print(userDefaults.set(passR, forKey: passkey))
+           case "false":
+
+               emailR.removeAll()
+               passR.removeAll()
+               userDefaults.set(varFalse, forKey: remberkey)
+               recoradando = userDefaults.string(forKey: remberkey)!
+               userDefaults.set(recoradando, forKey: boolKey)
+               updateRember()
+
+           default:
+
+               userDefaults.set(varTrue, forKey: remberkey)
+
+           }
+
+       }
+    
+    func change(){
+        
+       recoradando = userDefaults.string(forKey: remberkey)!
+       
+        if recoradando == "true"{
+            print("recuerdo")
+
+            myEmail.text = userDefaults.string(forKey: emailkey)
+            myPaswd.text = userDefaults.string(forKey: passkey)
+        }else{
+            print("no recuerdo")
+        
+            myEmail.text = ""
+            myPaswd.text = ""
+            userDefaults.set("", forKey: emailkey)
+            userDefaults.set("", forKey: passkey)
+        }
+    }
 }
