@@ -105,7 +105,6 @@ class ViewController: UIViewController {
                 }
                
                 DispatchQueue.main.sync {
-                    RemberSaved()
                     ViewController.email = myEmail.text!
                 }
             }.resume()
@@ -129,6 +128,8 @@ class ViewController: UIViewController {
             settingsViewController.finalTheme = "light"
         }
         
+   
+
     }
     
     var finalRember = "true"
@@ -147,6 +148,12 @@ class ViewController: UIViewController {
        var passR = ""
     
     var recoradando = ""
+
+       
+
+     
+
+       
 
        func updateRember(){
 
@@ -177,7 +184,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var switchBar: UISwitch!
     
     
-    func RemberSaved() {
+       @IBAction func RemberSaved(_ sender: Any) {
 
            switch finalRember{
 
@@ -193,7 +200,9 @@ class ViewController: UIViewController {
 
                recoradando = userDefaults.string(forKey: remberkey)!
                userDefaults.set(recoradando, forKey: boolKey)
-             
+               
+
+               
                updateRember()
                
                print(userDefaults.set(emailR, forKey: emailkey))
@@ -221,7 +230,7 @@ class ViewController: UIViewController {
        
         if recoradando == "true"{
             print("recuerdo")
-
+            
             myEmail.text = userDefaults.string(forKey: emailkey)
             myPaswd.text = userDefaults.string(forKey: passkey)
         }else{
@@ -232,5 +241,7 @@ class ViewController: UIViewController {
             userDefaults.set("", forKey: emailkey)
             userDefaults.set("", forKey: passkey)
         }
+       
     }
+    
 }
