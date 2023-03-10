@@ -29,14 +29,15 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         keepTheme()
-        //Cargamos la imagen de perfil
-        reloadProfile()
+        //Colocamos el nombre de usuario
+        
+        //Colocamos el nombre de usuario
+        nameUser.text = ViewController.user?.name
         tabla.removeAll()
         updateElementsTableView()
         tablaFavoritos.removeAll()
         SaveFavorites()
-        //Colocamos el nombre de usuario
-        nameUser.text = ViewController.user?.name
+       
         //Preparamos el menú
         Menu.showsMenuAsPrimaryAction = true
         Menu.menu = addMenuItems()
@@ -62,9 +63,12 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
     
     //Funcioned de Ciclo de vida
     override func viewDidAppear(_ animated: Bool) {
-        if imageLoad == false{
-            profileImg()
-        }
+        nameUser.text = ViewController.user?.name
+        //Cargamos la imagen de perfil
+        reloadProfile()
+        profileImg()
+           
+       
     }
     override func viewWillAppear(_ animated: Bool) {
         
@@ -108,7 +112,7 @@ class profileViewController: UIViewController,UITableViewDataSource, UITableView
             }
             //Recorremos la lista que acabamos de crear y añadimos al otro array de objetos que hemos creado especificamente para las listas
             for o in listaTemp as! [[String: Any]] {
-               
+                
                 tablaFavoritos.append(Favorite(json: o))
                
             }

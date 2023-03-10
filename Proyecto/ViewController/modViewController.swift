@@ -116,7 +116,7 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         request.addValue("application/json", forHTTPHeaderField: "Content-Type") // change as per server requirements
         request.addValue("application/json", forHTTPHeaderField: "Accept")
         
-        URLSession.shared.dataTask(with: request){
+            URLSession.shared.dataTask(with: request){
             (data, response, error) in
             print(response as Any)
             // Imprime el error en caso de que haya un fallo
@@ -128,15 +128,14 @@ class modViewController: UIViewController, UIImagePickerControllerDelegate, UINa
                 print("Error al recivir data.")
                 return
             }
-            print("\n\n\n")
-            print(data, String(data: data, encoding: .utf8) ?? "*unknown encoding*")
+            
             DispatchQueue.main.async {
                 self.dismiss(animated: true, completion: nil)
             }
      
             //Recibimos la respuesta del servidor si existe o no el usuario enviado y devuelve correcto o incorrecto y ya mandamos a la página correspondiente.
             do {
-                
+                print("decode")
                 let decoder = JSONDecoder()
 
                 ViewController.user = try decoder.decode(User.self, from: data)
